@@ -1,3 +1,5 @@
+using System.Net.Mime;
+
 namespace Drive.Data.Entities.Models;
 
 public class File
