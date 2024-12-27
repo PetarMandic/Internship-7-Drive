@@ -1,5 +1,7 @@
 using Drive.Domain.Repositories;
 using Drive.Presenation.Helpers;
+using Drive.Presentation.Actions.DriveMenu;
+
 namespace Drive.Presenation.Actions.Register;
 
 public class UserRegisterAction
@@ -8,6 +10,9 @@ public class UserRegisterAction
     {
         InputMail();
         InputPassword();
+        RepeatString();
+        
+        Console.WriteLine("Uspiješna registracija !!!");
     }
 
     public static void InputMail()
@@ -41,9 +46,25 @@ public class UserRegisterAction
         
         var isValid = RegisterRepository.PasswordConfirmation(password, confirmPassword);
 
-        if (!isValid)
+        while(!isValid)
         {
             Console.WriteLine("Niste potvrdili lozinku");
+            confirmPassword = Reader.TryReadPassword();
+            isValid = RegisterRepository.PasswordConfirmation(password, confirmPassword);
+        }
+    }
+
+    public static void RepeatString()
+    {
+        var randomString = RegisterRepository.RandomString();
+        Console.WriteLine("Prepišite ispisani string: " +randomString);
+        
+        var input = Console.ReadLine();
+        while (input != randomString)
+        {
+            randomString = RegisterRepository.RandomString();
+            Console.WriteLine("Prepišite ispisani string: " +randomString);
+            input = Console.ReadLine();
         }
     }
 }

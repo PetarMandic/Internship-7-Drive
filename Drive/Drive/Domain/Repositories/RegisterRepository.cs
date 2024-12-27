@@ -46,4 +46,38 @@ public class RegisterRepository
         
         return true;
     }
+
+    public static string RandomString()
+    {
+        Random random = new Random();
+        
+        const string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        const string digits = "0123456789";
+        const string allCharacters = letters + digits;
+
+        string randomString = string.Empty;
+        
+        bool hasLetter = false;
+        bool hasDigit = false;
+
+        while (randomString.Length < 6 || !hasLetter || !hasDigit)
+        {
+            randomString = string.Empty;
+            hasLetter = false;
+            hasDigit = false;
+            
+            for (int i = 0; i < 6; i++)
+            {
+                char randomChar = allCharacters[random.Next(allCharacters.Length)];
+                randomString += randomChar;
+                
+                if (char.IsLetter(randomChar)) hasLetter = true;
+                if (char.IsDigit(randomChar)) hasDigit = true;
+            }
+        }
+
+        return randomString;
+    }
+    
+    
 }          

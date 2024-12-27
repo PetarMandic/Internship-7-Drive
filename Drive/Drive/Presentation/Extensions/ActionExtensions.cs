@@ -21,7 +21,7 @@ public static class ActionExtensions
             
             if (pair.Item1)
             {
-                exit = OpenAction(pair.Item2);
+                exit = OpenAction(pair.Item2, menuItems);
             }
             
         }
@@ -48,22 +48,47 @@ public static class ActionExtensions
         }
     }
 
-    private static bool OpenAction(int currentSelection)
+    private static bool OpenAction(int currentSelection, List<string> menuItems)
     {
-        switch (currentSelection)
+        if (menuItems.Count == 3)
         {
-            case 0:
-                Console.Clear();
-                UserLoginAction.UserLogin();
-                break;
-            case 1:
-                Console.Clear();
-                UserRegisterAction.UserRegister();
-                break;
-            case 2:
-                Console.Clear();
-                Console.WriteLine("IZAŠLI STE IZ APLIKACIJE");
-                break;
+            switch (currentSelection)
+            {
+                case 0:
+                    Console.Clear();
+                    UserLoginAction.UserLogin();
+                    break;
+                case 1:
+                    Console.Clear();
+                    UserRegisterAction.UserRegister();
+                    break;
+                case 2:
+                    Console.Clear();
+                    Console.WriteLine("IZAŠLI STE IZ APLIKACIJE");
+                    break;
+            }
+        }
+
+        else
+        {
+            switch (currentSelection)
+            {
+                case 0:
+                    Console.Clear();
+                    UserLoginAction.UserLogin();
+                    break;
+                case 1:
+                    Console.Clear();
+                    UserRegisterAction.UserRegister();
+                    break;
+                case 2:
+                    Console.Clear();
+                    Console.WriteLine("IZAŠLI STE IZ APLIKACIJE");
+                    break;
+                case 3:
+                    Console.Clear();
+                    break;
+            }
         }
         return true;
     }

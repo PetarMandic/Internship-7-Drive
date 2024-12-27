@@ -22,9 +22,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Data\" />
-      <Folder Include="Domain\" />
-      <Folder Include="Presentation\" />
+      <Folder Include="Data\Seeds\" />
+      <Folder Include="Presentation\Actions\DriveMenu\MyDisk\" />
+      <Folder Include="Presentation\Actions\DriveMenu\ProfileSettings\" />
+      <Folder Include="Presentation\Actions\DriveMenu\Sharing\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Data\Drive.Data.csproj" />
+      <Content Include="Domain\Drive.Domain.csproj" />
+      <Content Include="Presentation\Drive.Presentation.csproj" />
     </ItemGroup>
 
 </Project>
