@@ -1,4 +1,5 @@
-using Drive.Data;
+using Microsoft.EntityFrameworkCore;
+using Drive.Data.Entities;
 
 namespace Drive.Domain.Repositories;
 
@@ -9,13 +10,20 @@ public class LoginRepository
     
     public static bool MailExist(string email)
     {
-        return false;
+        using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
+        {
+            return context.Users.Any(u => u.Mail == email);
+        }
     }
 
     public static bool PasswordMatch(string password)
     {
         lastLoginAttempt = DateTime.Now;
-        return false;
+        using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
+        {
+            return context.Users.Any(u => u.Password == password);
+        }
+        
     }
     
     public static TimeSpan TimePassed()

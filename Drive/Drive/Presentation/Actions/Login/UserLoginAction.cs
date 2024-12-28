@@ -1,5 +1,4 @@
 using Drive.Domain.Repositories;
-using Drive.Presenation.Factories;
 using Drive.Presenation.Helpers;
 using Drive.Presentation.Actions.DriveMenu;
 
@@ -20,6 +19,8 @@ public class UserLoginAction
         }
         
         Console.WriteLine("Uspiješna prijava !!!");
+        Thread.Sleep(3000);
+        
         DriveMenuDisplay.DriveMenu(firstCheck.Item2, secondCheck.Item2);
     }
 

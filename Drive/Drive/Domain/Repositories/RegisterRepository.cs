@@ -1,4 +1,6 @@
 using System.Text.RegularExpressions;
+using Drive.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Drive.Domain.Repositories;
 
@@ -9,6 +11,16 @@ public class RegisterRepository
         var isValid1 = CountMailChar(mail);
         var isValid2 = Regex.IsMatch(mail, @"^[^@]+@[^@]+\.[^@]{3,}$");
         return (isValid1, isValid2);
+    }
+
+    public static bool MailExist(string mail)
+    {
+        using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>()
+                   .UseNpgsql("Server=127.0.0.1;Port=5432;Database=Users;User Id=postgres;Password=4aE8tGEC;")
+                   .Options))
+        {
+            return context.Users.Any(u => u.Mail == mail);
+        }
     }
 
     public static bool CountMailChar(string mail)
@@ -78,6 +90,5 @@ public class RegisterRepository
 
         return randomString;
     }
-    
     
 }          

@@ -1,5 +1,7 @@
 using Drive.Domain.Repositories;
 using Drive.Presenation.Helpers;
+using Drive.Presenation.Factories;
+using Drive.Presenation.Extensions;
 
 namespace Drive.Presenation.Actions.Register;
 
@@ -7,20 +9,26 @@ public class UserRegisterAction
 {
     public static void UserRegister()
     {
-        InputMail();
-        InputPassword();
+        var mail = InputMail();
+        var password = InputPassword();
         RepeatString();
+        UserRepository.AddUser(mail, password);
         
         Console.WriteLine("Uspiješna registracija !!!");
+        Thread.Sleep(3000);
+        
+        Console.Clear();
+        var mainMenuActions = MainMenuFactory.CreateActions();
+        ActionExtensions.PrintActionsAndOpen(mainMenuActions);
     }
 
-    public static void InputMail()
+    public static string InputMail()
     {
+        
         Writer.WriteMail();
         var mail = Reader.TryReadMail();
-
         var pair = RegisterRepository.MailFormatValid(mail);
-
+        var mailExist = RegisterRepository.MailExist(mail);
         if (!pair.Item1)
         {
             Console.Clear();
@@ -33,9 +41,16 @@ public class UserRegisterAction
             Console.WriteLine("Format maila nije ispunjen([string min 1 char]@[string min 2 chara].[string min 3 chara])");
             InputMail();
         }
+        else if (mailExist)
+        {
+            Console.Clear();
+            Console.WriteLine("Mail već postoji");
+            InputMail();
+        }
+        return mail;
     }
 
-    public static void InputPassword()
+    public static string InputPassword()
     {
         Writer.WritePassword();
         var password = Reader.TryReadPassword();
@@ -51,6 +66,7 @@ public class UserRegisterAction
             confirmPassword = Reader.TryReadPassword();
             isValid = RegisterRepository.PasswordConfirmation(password, confirmPassword);
         }
+        return password;
     }
 
     public static void RepeatString()

@@ -10,6 +10,7 @@
     <ItemGroup>
       <PackageReference Include="Azure.Core" Version="1.44.1" />
       <PackageReference Include="Azure.Identity" Version="1.13.1" />
+      <PackageReference Include="DotNetEnv" Version="3.1.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Data\Migrations\" />
       <Folder Include="Presentation\Actions\DriveMenu\MyDisk\" />
       <Folder Include="Presentation\Actions\DriveMenu\ProfileSettings\" />
       <Folder Include="Presentation\Actions\DriveMenu\Sharing\" />

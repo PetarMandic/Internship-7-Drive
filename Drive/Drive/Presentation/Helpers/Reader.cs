@@ -5,7 +5,7 @@ public class Reader
     public static string TryReadMail()
     {
         var email = Console.ReadLine();
-        while (email != String.Empty)
+        while (email == String.Empty)
         {
             email = Console.ReadLine();
         }
@@ -15,7 +15,7 @@ public class Reader
     public static string TryReadPassword()
     {
         var password = Console.ReadLine();
-        while (password != string.Empty)
+        while (password == string.Empty)
         {
             password = Console.ReadLine();
         }

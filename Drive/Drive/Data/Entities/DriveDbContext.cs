@@ -2,10 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Drive.Data.Entities.Models;
+using Drive.Data.Seeds;
 using File = Drive.Data.Entities.Models.File;
 
-/*using Drive.Data.Seeds;*/
- 
 namespace Drive.Data.Entities;
 
 public class DriveDbContext : DbContext
@@ -14,7 +13,7 @@ public class DriveDbContext : DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Server= 127.0.0.1;Port=5432;Database=Users;User Id=postgres;Pasword=4aE8tGEC;");
+        optionsBuilder.UseNpgsql("Server= 127.0.0.1;Port=5432;Database=Users;User Id=postgres;Password=4aE8tGEC;");
     }
     public DbSet<User> Users { get; set; }
     public DbSet<File> Files { get; set; }
@@ -66,6 +65,7 @@ public class DriveDbContext : DbContext
             .HasIndex(f => f.Id)
             .IsUnique();
         
+        DatabaseSeeder.Seed(modelBuilder);
         base.OnModelCreating(modelBuilder);
     }
 
