@@ -24,9 +24,6 @@
 
     <ItemGroup>
       <Folder Include="Data\Migrations\" />
-      <Folder Include="Presentation\Actions\DriveMenu\MyDisk\" />
-      <Folder Include="Presentation\Actions\DriveMenu\ProfileSettings\" />
-      <Folder Include="Presentation\Actions\DriveMenu\Sharing\" />
     </ItemGroup>
 
     <ItemGroup>

@@ -65,6 +65,45 @@ public class DriveDbContext : DbContext
             .HasIndex(f => f.Id)
             .IsUnique();
         
+        modelBuilder.Entity<GroupUserAndFolder>()
+            .HasKey(gu => new { gu.GroupId, gu.UserId }); 
+        
+        modelBuilder.Entity<GroupUserAndFile>()
+            .HasKey(gu => new { gu.GroupId, gu.UserId }); 
+        
+        modelBuilder.Entity<GroupFolderAndFile>()
+            .HasKey(gu => new { gu.GroupId, gu.FolderId }); 
+        
+        modelBuilder.Entity<GroupUserAndFolder>()
+            .HasOne(gu => gu.User)     
+            .WithMany()                
+            .HasForeignKey(gu => gu.UserId); 
+
+        modelBuilder.Entity<GroupUserAndFolder>()
+            .HasOne(gu => gu.Folder)  
+            .WithMany()                
+            .HasForeignKey(gu => gu.FolderId);
+        
+        modelBuilder.Entity<GroupUserAndFile>()
+            .HasOne(gu => gu.User)     
+            .WithMany()                
+            .HasForeignKey(gu => gu.UserId); 
+
+        modelBuilder.Entity<GroupUserAndFile>()
+            .HasOne(gu => gu.File)  
+            .WithMany()                
+            .HasForeignKey(gu => gu.FileId);
+        
+        modelBuilder.Entity<GroupFolderAndFile>()
+            .HasOne(gu => gu.Folder)     
+            .WithMany()                
+            .HasForeignKey(gu => gu.FolderId); 
+
+        modelBuilder.Entity<GroupFolderAndFile>()
+            .HasOne(gu => gu.File)  
+            .WithMany()                
+            .HasForeignKey(gu => gu.FileId);
+
         DatabaseSeeder.Seed(modelBuilder);
         base.OnModelCreating(modelBuilder);
     }

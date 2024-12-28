@@ -1,7 +1,10 @@
 using Drive.Domain.Repositories;
-using Drive.Presenation.Actions;
+using Drive.Presenation.Factories;
 using Drive.Presenation.Actions.Login;
 using Drive.Presenation.Actions.Register;
+using Drive.Presentation.Actions.DriveMenu.MyDisk;
+using Drive.Presentation.Actions.DriveMenu.ProfileSettings;
+using Drive.Presentation.Actions.DriveMenu.Sharing;
 
 namespace Drive.Presenation.Extensions;
 
@@ -75,18 +78,20 @@ public static class ActionExtensions
             {
                 case 0:
                     Console.Clear();
-                    UserLoginAction.UserLogin();
+                    MyDiskAction.MyDisk();
                     break;
                 case 1:
                     Console.Clear();
-                    UserRegisterAction.UserRegister();
+                    SharingAction.Sharing();
                     break;
                 case 2:
                     Console.Clear();
-                    Console.WriteLine("IZAŠLI STE IZ APLIKACIJE");
+                    ProfileSettingsAction.ProfileSettings();
                     break;
                 case 3:
                     Console.Clear();
+                    var mainMenuActions = MainMenuFactory.CreateActions();
+                    PrintActionsAndOpen(mainMenuActions);
                     break;
             }
         }
