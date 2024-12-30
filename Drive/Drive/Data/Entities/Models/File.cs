@@ -5,13 +5,19 @@ namespace Drive.Data.Entities.Models;
 public class File
 {
     public Guid Id { get; init; }
-    public string FileName { get; set; }
+    public string Name { get; set; }
     public DateTime EditingTime { get; set; }
+    public string Text { get; set; }
 
-    public File(Guid id, string fileName, DateTime editingTime)
+    public File(Guid id, string name, DateTime editingTime, string text, Guid? folderId)
     {
         Id = id;
-        FileName = fileName;
+        Name = name;
         EditingTime = editingTime;
+        Text = text;
+        FolderId = folderId;
     }
+    
+    public Guid? FolderId { get; set; }
+    public Folder Folder { get; set; }
 }

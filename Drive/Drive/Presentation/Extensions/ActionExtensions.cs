@@ -10,7 +10,7 @@ namespace Drive.Presenation.Extensions;
 
 public static class ActionExtensions
 {
-    public static void PrintActionsAndOpen(this List<string> menuItems)
+    public static void PrintActionsAndOpen(this List<string> menuItems, string mail)
     {
         var exit = false;
         
@@ -24,7 +24,7 @@ public static class ActionExtensions
             
             if (pair.Item1)
             {
-                exit = OpenAction(pair.Item2, menuItems);
+                exit = OpenAction(pair.Item2, menuItems, mail);
             }
             
         }
@@ -51,7 +51,7 @@ public static class ActionExtensions
         }
     }
 
-    private static bool OpenAction(int currentSelection, List<string> menuItems)
+    private static bool OpenAction(int currentSelection, List<string> menuItems, string mail)
     {
         if (menuItems.Count == 3)
         {
@@ -78,7 +78,7 @@ public static class ActionExtensions
             {
                 case 0:
                     Console.Clear();
-                    MyDiskAction.MyDisk();
+                    MyDiskAction.MyDisk(mail);
                     break;
                 case 1:
                     Console.Clear();
@@ -86,12 +86,12 @@ public static class ActionExtensions
                     break;
                 case 2:
                     Console.Clear();
-                    ProfileSettingsAction.ProfileSettings();
+                    ProfileSettingsDisplay.ProfileSettingsMenu(mail);
                     break;
                 case 3:
                     Console.Clear();
                     var mainMenuActions = MainMenuFactory.CreateActions();
-                    PrintActionsAndOpen(mainMenuActions);
+                    PrintActionsAndOpen(mainMenuActions, "");
                     break;
             }
         }
