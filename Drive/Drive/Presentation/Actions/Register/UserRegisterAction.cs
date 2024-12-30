@@ -1,5 +1,5 @@
 using Drive.Domain.Repositories;
-using Drive.Presenation.Helpers;
+using Drive.Presentation.Helpers;
 using Drive.Presenation.Factories;
 using Drive.Presenation.Extensions;
 
@@ -19,7 +19,7 @@ public class UserRegisterAction
         
         Console.Clear();
         var mainMenuActions = MainMenuFactory.CreateActions();
-        ActionExtensions.PrintActionsAndOpen(mainMenuActions);
+        ActionExtensions.PrintActionsAndOpen(mainMenuActions, "");
     }
 
     public static string InputMail()

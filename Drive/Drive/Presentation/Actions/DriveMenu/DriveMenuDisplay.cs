@@ -5,9 +5,9 @@ namespace Drive.Presentation.Actions.DriveMenu;
 
 public class DriveMenuDisplay
 {
-    public static void DriveMenu(string mail, string password)
+    public static void DriveMenu(string mail)
     {
         var driveMenuActions = DriveMenuFactory.CreateAction();
-        ActionExtensions.PrintActionsAndOpen(driveMenuActions);
+        ActionExtensions.PrintActionsAndOpen(driveMenuActions, mail);
     }
 }

@@ -1,4 +1,4 @@
-namespace Drive.Presenation.Helpers;
+namespace Drive.Presentation.Helpers;
 
 public class Reader
 {
@@ -20,5 +20,21 @@ public class Reader
             password = Console.ReadLine();
         }
         return password;
+    }
+
+    public static string TryReadCommand()
+    {
+        var command = Console.ReadLine();
+        while(command == String.Empty)
+        {
+            command = Console.ReadLine();
+        }
+        return command;
+    }
+
+    public static ConsoleKeyInfo TryReadFileChar()
+    {
+        var key = Console.ReadKey();
+        return key;
     }
 }

@@ -82,7 +82,7 @@ public static class ActionExtensions
                     break;
                 case 1:
                     Console.Clear();
-                    SharingAction.Sharing();
+                    SharingAction.Sharing(mail);
                     break;
                 case 2:
                     Console.Clear();

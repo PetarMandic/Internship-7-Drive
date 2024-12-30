@@ -1,5 +1,5 @@
 using Drive.Domain.Repositories;
-using Drive.Presenation.Helpers;
+using Drive.Presentation.Helpers;
 using Drive.Presentation.Actions.DriveMenu;
 
 namespace Drive.Presenation.Actions.Login;
@@ -21,7 +21,7 @@ public class UserLoginAction
         Console.WriteLine("Uspiješna prijava !!!");
         Thread.Sleep(3000);
         
-        DriveMenuDisplay.DriveMenu(firstCheck.Item2, secondCheck.Item2);
+        DriveMenuDisplay.DriveMenu(firstCheck.Item2);
     }
 
     public static (bool,string) InputMail()

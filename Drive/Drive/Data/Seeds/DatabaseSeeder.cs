@@ -30,10 +30,10 @@ public static class DatabaseSeeder
         builder.Entity<File>()
             .HasData(new List<File>
             {
-                new File(Guid.NewGuid(),"Document1.txt", DateTime.UtcNow.AddDays(-10), "Doument", null),
-                new File(Guid.NewGuid(),"Image1.jpg", DateTime.UtcNow.AddDays(-5), "Slika", null),
-                new File(Guid.NewGuid(),"ProjectProposal.docx", DateTime.UtcNow.AddDays(-2), "Projekt", null),
-                new File(Guid.NewGuid(),"Document2.pdf", DateTime.UtcNow.AddDays(-8), "Dokument", null),
+                new File(Guid.NewGuid(),"Document1.txt", DateTime.UtcNow.AddDays(-10), new List<string>(){"dokument1"}, null),
+                new File(Guid.NewGuid(),"Image1.jpg", DateTime.UtcNow.AddDays(-5), new List<string>(){"najbolja slika"}, null),
+                new File(Guid.NewGuid(),"ProjectProposal.docx", DateTime.UtcNow.AddDays(-2), new List<string>(){"prvi projekt"}, null),
+                new File(Guid.NewGuid(),"Document2.pdf", DateTime.UtcNow.AddDays(-8), new List<string>(){"dokument2"}, null),
             });
     }
 }
