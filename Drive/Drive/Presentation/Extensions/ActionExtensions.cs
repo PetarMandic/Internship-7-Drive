@@ -53,48 +53,77 @@ public static class ActionExtensions
 
     private static bool OpenAction(int currentSelection, List<string> menuItems, string mail)
     {
-        if (menuItems.Count == 3)
+        if (menuItems.Count == 2)
         {
-            switch (currentSelection)
-            {
-                case 0:
-                    Console.Clear();
-                    UserLoginAction.UserLogin();
-                    break;
-                case 1:
-                    Console.Clear();
-                    UserRegisterAction.UserRegister();
-                    break;
-                case 2:
-                    Console.Clear();
-                    Console.WriteLine("IZAŠLI STE IZ APLIKACIJE");
-                    break;
-            }
+            ProfileSettingsMenuOptions(currentSelection, mail);
+        }
+        else if (menuItems.Count == 3)
+        {
+            StartMenuOptions(currentSelection);
         }
 
         else
         {
-            switch (currentSelection)
-            {
-                case 0:
-                    Console.Clear();
-                    MyDiskAction.MyDisk(mail);
-                    break;
-                case 1:
-                    Console.Clear();
-                    SharingAction.Sharing(mail);
-                    break;
-                case 2:
-                    Console.Clear();
-                    ProfileSettingsDisplay.ProfileSettingsMenu(mail);
-                    break;
-                case 3:
-                    Console.Clear();
-                    var mainMenuActions = MainMenuFactory.CreateActions();
-                    PrintActionsAndOpen(mainMenuActions, "");
-                    break;
-            }
+            DriveMenuOptions(currentSelection, mail);
         }
         return true;
+    }
+
+    public static void StartMenuOptions(int currentSelection)
+    {
+        switch (currentSelection)
+        {
+            case 0:
+                Console.Clear();
+                UserLoginAction.UserLogin();
+                break;
+            case 1:
+                Console.Clear();
+                UserRegisterAction.UserRegister();
+                break;
+            case 2:
+                Console.Clear();
+                Console.WriteLine("IZAŠLI STE IZ APLIKACIJE");
+                break;
+        }
+    }
+
+    public static void DriveMenuOptions(int currentSelection, string mail)
+    {
+        switch (currentSelection)
+        {
+            case 0:
+                Console.Clear();
+                MyDiskAction.MyDisk(mail);
+                break;
+            case 1:
+                Console.Clear();
+                SharingAction.Sharing(mail);
+                break;
+            case 2:
+                Console.Clear();
+                ProfileSettingsDisplay.ProfileSettingsMenu(mail);
+                break;
+            case 3:
+                Console.Clear();
+                var mainMenuActions = MainMenuFactory.CreateActions();
+                PrintActionsAndOpen(mainMenuActions, "");
+                break;
+        }
+    }
+
+    public static void ProfileSettingsMenuOptions(int currentSelection, string mail)
+    {
+        switch (currentSelection)
+        {
+            case 0:
+                Console.Clear();
+                ProfileSettingsAction.ProfileSettingsMail(mail);
+                break;
+            case 1:
+                Console.Clear();
+                ProfileSettingsAction.ProfileSettingsPassword(mail);
+                break;
+        }
     }
 }
