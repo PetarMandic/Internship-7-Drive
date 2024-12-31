@@ -22,9 +22,9 @@ public static class DatabaseSeeder
         builder.Entity<Folder>()
             .HasData(new List<Folder>
             {
-                new Folder(Guid.NewGuid(), "Documents", null) { UserId = users[0].Id }, 
-                new Folder(Guid.NewGuid(), "Images", null) { UserId = users[1].Id },    
-                new Folder(Guid.NewGuid(), "Projects", null) { UserId = users[2].Id }   
+                new Folder(Guid.NewGuid(), "Documents", null,users[0].Id),
+                new Folder(Guid.NewGuid(), "Images", null,users[1].Id ),   
+                new Folder(Guid.NewGuid(), "Projects", null,users[2].Id ),  
             });
         
         builder.Entity<File>()

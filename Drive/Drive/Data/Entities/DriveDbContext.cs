@@ -19,66 +19,68 @@ public class DriveDbContext : DbContext
     public DbSet<File> Files { get; set; }
     public DbSet<Folder> Folders { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<User>()
-            .HasKey(u => u.Id);
+{
+   
+    modelBuilder.Entity<User>()
+        .HasKey(u => u.Id);
 
-        modelBuilder.Entity<User>()
-            .Property(u => u.Mail)
-            .IsRequired()
-            .HasMaxLength(100);
+    modelBuilder.Entity<User>()
+        .Property(u => u.Mail)
+        .IsRequired()
+        .HasMaxLength(100);
 
-        modelBuilder.Entity<User>()
-            .Property(u => u.Password)
-            .IsRequired()
-            .HasMaxLength(100);
-        
-        modelBuilder.Entity<Folder>()
-            .HasKey(f => f.Id);
+    modelBuilder.Entity<User>()
+        .Property(u => u.Password)
+        .IsRequired()
+        .HasMaxLength(100);
+    
+    modelBuilder.Entity<Folder>()
+        .HasKey(f => f.Id);
 
-        modelBuilder.Entity<Folder>()
-            .Property(f => f.Name)
-            .IsRequired()
-            .HasMaxLength(150);
+    modelBuilder.Entity<Folder>()
+        .Property(f => f.Name)
+        .IsRequired()
+        .HasMaxLength(150);
 
-        modelBuilder.Entity<Folder>()
-            .HasOne(f => f.User)
-            .WithMany(u => u.Folders)
-            .HasForeignKey(f => f.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        modelBuilder.Entity<Folder>()
-            .HasOne(f => f.ParentFolder)
-            .WithMany(f => f.SubFolders)
-            .HasForeignKey(f => f.ParentFolderId)
-            .OnDelete(DeleteBehavior.SetNull);
-        
-        modelBuilder.Entity<File>()
-            .HasKey(f => f.Id);
+    
+    modelBuilder.Entity<Folder>()
+        .HasOne(f => f.User)               
+        .WithMany(u => u.Folders)          
+        .HasForeignKey(f => f.UserId)      
+        .OnDelete(DeleteBehavior.Cascade);
+    
+    modelBuilder.Entity<Folder>()
+        .HasOne(f => f.ParentFolder)      
+        .WithMany(f => f.SubFolders)     
+        .HasForeignKey(f => f.ParentFolderId)  
+        .OnDelete(DeleteBehavior.SetNull);   
 
-        modelBuilder.Entity<File>()
-            .Property(f => f.Name)
-            .IsRequired()
-            .HasMaxLength(150);
-        
-        modelBuilder.Entity<File>()
-            .Property(f => f.EditingTime)
-            .IsRequired();
+    modelBuilder.Entity<File>()
+        .HasKey(f => f.Id);
 
-        modelBuilder.Entity<File>()
-            .Property(f => f.Text)
-            .HasColumnType("text[]") 
-            .IsRequired();
+    modelBuilder.Entity<File>()
+        .Property(f => f.Name)
+        .IsRequired()
+        .HasMaxLength(150);
 
-        modelBuilder.Entity<File>()
-            .HasOne(f => f.Folder)
-            .WithMany(fl => fl.Files)
-            .HasForeignKey(f => f.FolderId)
-            .OnDelete(DeleteBehavior.SetNull);
-        
-        DatabaseSeeder.Seed(modelBuilder);
-        base.OnModelCreating(modelBuilder);
-    }
+    modelBuilder.Entity<File>()
+        .Property(f => f.EditingTime)
+        .IsRequired();
+
+    modelBuilder.Entity<File>()
+        .Property(f => f.Text)
+        .HasColumnType("text[]")
+        .IsRequired();
+    
+    modelBuilder.Entity<File>()
+        .HasOne(f => f.Folder)
+        .WithMany(fl => fl.Files)
+        .HasForeignKey(f => f.FolderId) 
+        .OnDelete(DeleteBehavior.SetNull); 
+
+    DatabaseSeeder.Seed(modelBuilder);
+    base.OnModelCreating(modelBuilder);
+}
 
     public class DriveDbContextFactory : IDesignTimeDbContextFactory<DriveDbContext>
     {

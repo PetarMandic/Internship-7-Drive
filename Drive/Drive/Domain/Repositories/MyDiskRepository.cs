@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using Drive.Data.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Drive.Data.Entities;
@@ -139,11 +140,11 @@ public class MyDiskRepository
     }
 
     
-    public static void CreateFolder(string nameOfFolder, Guid? parentFolderId)
+    public static void CreateFolder(string nameOfFolder, Guid? parentFolderId, Guid userId)
     {
         using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
         {
-            var newFolder = new Folder(Guid.NewGuid(), nameOfFolder, parentFolderId);
+            var newFolder = new Folder(Guid.NewGuid(), nameOfFolder, parentFolderId, userId);
             context.Folders.Add(newFolder);
             context.SaveChanges();
         }
@@ -153,7 +154,7 @@ public class MyDiskRepository
     {
         using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
         {
-            var newFile = new File(Guid.NewGuid(), nameOfFile,DateTime.Now , new List<string>(){""},parentFolderId);
+            var newFile = new File(Guid.NewGuid(), nameOfFile,DateTime.UtcNow , new List<string>(){""},parentFolderId);
             context.Files.Add(newFile);
             context.SaveChanges();
         }
@@ -183,7 +184,7 @@ public class MyDiskRepository
                 DeleteFolder(subFolder.Name, subFolder.ParentFolderId);
             }
         
-            foreach (var file in folderToDelete.Files.ToList())
+            foreach (var file in folderToDelete.Files)
             {
                 context.Files.Remove(file);
             }
@@ -230,5 +231,6 @@ public class MyDiskRepository
             context.SaveChanges();
         }
     }
+    
     
 }

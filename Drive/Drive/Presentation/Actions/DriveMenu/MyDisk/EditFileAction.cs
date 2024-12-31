@@ -55,12 +55,12 @@ public class EditFileAction
             case "spremanje i izlaz":
                 FileEditingRepository.ExitAndSave(fileName,folderId);
                 Console.WriteLine("Datoteka je uređena");
-                MyDiskAction.MyDisk(mail);
+                MyDiskAction.MyDisk(mail, folderId);
                 return true;
             case "izlaz bez spremanja":
                 FileEditingRepository.ExitAndDontSave();
                 Console.WriteLine("Datoteka nije uređena");
-                MyDiskAction.MyDisk(mail);
+                MyDiskAction.MyDisk(mail, folderId);
                 return true;
         }
         return false;

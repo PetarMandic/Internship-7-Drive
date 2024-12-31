@@ -94,7 +94,7 @@ public static class ActionExtensions
         {
             case 0:
                 Console.Clear();
-                MyDiskAction.MyDisk(mail);
+                MyDiskAction.MyDisk(mail, null);
                 break;
             case 1:
                 Console.Clear();

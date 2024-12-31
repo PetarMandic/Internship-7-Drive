@@ -35,12 +35,12 @@ public class Writer
         Console.WriteLine("help – ispisuju se sve komande za uređivanje datoteke\nspremanje i izlaz\nizlaz bez spremanja");
     }
 
-    public static void DoesntExist(bool nameExist, string type, string mail)
+    public static void DoesntExist(bool nameExist, string type, string mail, Guid? parentId)
     {
         if (nameExist == false)
         {
             Console.WriteLine($"Ime {type} nije ispravao");
-            MyDiskAction.MyDisk(mail);
+            MyDiskAction.MyDisk(mail, parentId);
         }
     }
 }

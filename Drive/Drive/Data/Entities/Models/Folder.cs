@@ -5,11 +5,12 @@ public class Folder
     public Guid Id { get; init; }
     public string Name { get; set; }
 
-    public Folder(Guid id, string name, Guid? parentFolderId)
+    public Folder(Guid id, string name, Guid? parentFolderId, Guid userId)
     {
         Id = id;
         Name = name;
         ParentFolderId = parentFolderId;
+        UserId = userId;
     }
     
     public Guid? ParentFolderId { get; set; } 

@@ -5,8 +5,7 @@ namespace Drive.Presentation.Actions.DriveMenu.MyDisk;
 
 public class MyDiskAction
 {
-    public static Guid? parentFolderId = null;
-    public static void MyDisk(string mail)
+    public static void MyDisk(string mail, Guid? parentFolderId)
     {
         var userId = MyDiskRepository.FindUserId(mail);
         
@@ -14,13 +13,15 @@ public class MyDiskAction
         {
             FirstDisplay(userId);
         }
-        
-        AnyOtherDisplay(userId, parentFolderId);
+        else
+        {
+            AnyOtherDisplay(userId, parentFolderId);
+        }
         
         Console.WriteLine("Unesite komandu: ");
         var command = Reader.TryReadCommand();
 
-        parentFolderId = Commands(command, parentFolderId, mail);
+        Commands(command, parentFolderId, mail, userId);
     }
 
     public static void FirstDisplay(Guid userId)
@@ -37,7 +38,7 @@ public class MyDiskAction
         Writer.PrintFoldersAndFiles(folders, files);
     }
     
-    public static Guid? Commands(string command, Guid? parentFolderId,string mail)
+    public static void Commands(string command, Guid? parentFolderId,string mail, Guid userId)
     {
         var commandLine = command;
         command = MyDiskRepository.ReturnCommand(command);
@@ -46,30 +47,31 @@ public class MyDiskAction
             case "help":
                 Console.Clear();
                 Writer.HelpCommand();
-                MyDisk(mail);
+                MyDisk(mail, parentFolderId);
                 break;
             case "stvori mapu":
                 Console.Clear();
-                var nameOfFolder = CheckNameFolder(commandLine, parentFolderId,mail);
-                MyDiskRepository.CreateFolder(nameOfFolder, parentFolderId);
+                var nameOfFolder = MyDiskRepository.ReturnName(commandLine);
+                MyDiskRepository.CreateFolder(nameOfFolder, parentFolderId, userId);
                 Console.WriteLine("Mapa je stvorena");
                 Thread.Sleep(2000);
                 Console.Clear();
-                MyDisk(mail);
+                MyDisk(mail, parentFolderId);
                 break;
             case "stvori datoteku":
                 Console.Clear();
-                var nameOfFile = CheckNameFile(commandLine, parentFolderId, mail);
+                var nameOfFile = MyDiskRepository.ReturnName(commandLine);
                 MyDiskRepository.CreateFile(nameOfFile, parentFolderId);
                 Console.WriteLine("Datoteka je stvorena");
                 Thread.Sleep(2000);
-                MyDisk(mail);
+                MyDisk(mail, parentFolderId);
                 break;
             case "uđi":
                 Console.Clear();
                 nameOfFolder = CheckNameFolder(commandLine, parentFolderId,mail);
                 var parentId = MyDiskRepository.OpenFolder(nameOfFolder, parentFolderId);
-                return parentId;
+                MyDisk(mail, parentId);
+                break;
             case "uredi":
                 Console.Clear();
                 nameOfFile = CheckNameFile(commandLine, parentFolderId, mail);
@@ -81,7 +83,7 @@ public class MyDiskAction
                 MyDiskRepository.DeleteFolder(nameOfFolder, parentFolderId);
                 Console.WriteLine("Mapa je izbrisana");
                 Thread.Sleep(2000);
-                MyDisk(mail);
+                MyDisk(mail,parentFolderId);
                 break;
             case "izbriši datoteku":
                 Console.Clear();
@@ -89,7 +91,7 @@ public class MyDiskAction
                 MyDiskRepository.DeleteFile(nameOfFile, parentFolderId);
                 Console.WriteLine("Datoteka je izbrisana");
                 Thread.Sleep(2000);
-                MyDisk(mail);
+                MyDisk(mail,parentFolderId);
                 break;
             case "promjeni naziv mape":
                 Console.Clear();
@@ -98,7 +100,7 @@ public class MyDiskAction
                 MyDiskRepository.RenameFolder(nameOfFolder, newName, parentFolderId);
                 Console.WriteLine("Promjenjen je naziv mape");
                 Thread.Sleep(2000);
-                MyDisk(mail);
+                MyDisk(mail,parentFolderId);
                 break;
             case "promjeni naziv datoteke":
                 Console.Clear();
@@ -107,23 +109,22 @@ public class MyDiskAction
                 MyDiskRepository.RenameFile(nameOfFile, newName, parentFolderId);
                 Console.WriteLine("Promjenjen je naziv datoteke");
                 Thread.Sleep(2000);
-                MyDisk(mail);
+                MyDisk(mail,parentFolderId);
                 break;
             case "povratak":
                 Console.Clear();
                 DriveMenuDisplay.DriveMenu(mail);
-                MyDisk(mail);
+                MyDisk(mail,parentFolderId);
                 break;
         }
 
-        return null;
     }
 
     public static string CheckNameFolder(string commandLine, Guid? parentFolderId,string mail)
     {
         var nameOfFolder = MyDiskRepository.ReturnName(commandLine);
         var nameExist = MyDiskRepository.FolderExists(nameOfFolder, parentFolderId);
-        Writer.DoesntExist(nameExist, "mape", mail);
+        Writer.DoesntExist(nameExist, "mape", mail, parentFolderId);
         return nameOfFolder;
     }
 
@@ -131,7 +132,7 @@ public class MyDiskAction
     {
         var nameOfFile = MyDiskRepository.ReturnName(commandLine);
         var nameExist = MyDiskRepository.FileExists(nameOfFile, parentFolderId);
-        Writer.DoesntExist(nameExist, "datoteke", mail);
+        Writer.DoesntExist(nameExist, "datoteke", mail, parentFolderId);
         return nameOfFile;
     }
 }

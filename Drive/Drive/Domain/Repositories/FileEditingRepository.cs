@@ -84,7 +84,7 @@ public class FileEditingRepository
             foreach (var textLine in Lists.newText)
             {
                 file.Text.Add(textLine); 
-                file.EditingTime = DateTime.Now;
+                file.EditingTime = DateTime.UtcNow;
             }
             context.SaveChanges();
             Lists.newText.Clear();
