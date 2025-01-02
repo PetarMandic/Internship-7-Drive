@@ -12,6 +12,7 @@ public class User
         Mail = mail;
         Password = password;
     }
-    
+    public ICollection<File> Files { get; set; }
     public ICollection<Folder> Folders { get; set; } = new List<Folder>();
+    public ICollection<Comment> Comments { get; set; }  
 }
