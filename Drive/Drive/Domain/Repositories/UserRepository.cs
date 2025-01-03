@@ -15,4 +15,15 @@ public class UserRepository
             context.SaveChanges();
         }
     }
+
+    public static bool CheckIfUserExists(string mail)
+    {
+        using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
+        {
+            
+            var userExists = context.Users.Any(u => u.Mail == mail);
+            
+            return userExists;
+        }
+    }
 }

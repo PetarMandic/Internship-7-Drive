@@ -1,4 +1,3 @@
-using System.Reflection.Metadata.Ecma335;
 using Drive.Data.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Drive.Data.Entities;
@@ -25,8 +24,8 @@ public class MyDiskRepository
     {
         using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
         {
-            var folder = context.Files.FirstOrDefault(f => f.Name == fileName && f.FolderId == folderId);
-            if (folder == null)
+            var file = context.Files.FirstOrDefault(f => f.Name == fileName && f.FolderId == folderId);
+            if (file == null)
             {
                 return false;
             }
@@ -60,7 +59,7 @@ public class MyDiskRepository
         using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
         {
             var files = context.Files
-                .Where(f => f.FolderId == folderId) 
+                .Where(f => f.FolderId == folderId && f.UserId == userId) 
                 .OrderBy(f => f.EditingTime) 
                 .ToList();
             return files;
@@ -69,19 +68,23 @@ public class MyDiskRepository
     
     public static string ReturnName(string command)
     {
+        var symbolCount = 0;
         var Symbol = "'";
         var name = "";
         for (var i = 0; i < command.Length; i++)
         {
-            if (command[i] == Symbol[0])
-            {
+            if (command[i] == Symbol[0] && symbolCount == 0)
+            {       
                 for (var j = i+1; j < command.Length - 1; j++)
                 {
+                    if (command[j] == Symbol[0])
+                    {
+                        return name;
+                    }
                     name += command[j];
                 }
             }
         }
-
         return name;
     }
 
@@ -103,6 +106,7 @@ public class MyDiskRepository
                 {
                     name += command[j];
                 }
+                return name;
             }
         }
         
@@ -114,7 +118,8 @@ public class MyDiskRepository
         if (currentLine.Contains("help") || currentLine.Contains("stvori mapu") || currentLine.Contains("stvori datoteku") || 
             currentLine.Contains("uđi") || currentLine.Contains("uredi") || currentLine.Contains("izbriši mapu") || 
             currentLine.Contains("izbriši datoteku") || currentLine.Contains("promjeni naziv mape") || 
-            currentLine.Contains("promjeni naziv datoteke") || currentLine.Contains("povratak"))
+            currentLine.Contains("promjeni naziv datoteke") || currentLine.Contains("povratak") || 
+            currentLine.Contains("podjeli mapu s") || currentLine.Contains("prestani dijeliti mapu s"))
         {
             var line = currentLine;  
 
@@ -130,6 +135,8 @@ public class MyDiskRepository
                 var l when l.Contains("promjeni naziv mape") => "promjeni naziv mape",
                 var l when l.Contains("promjeni naziv datoteke") => "promjeni naziv datoteke",
                 var l when l.Contains("povratak") => "povratak",
+                var l when l.Contains("podjeli mapu s") => "podjeli mapu s",
+                var l when l.Contains("prestani dijeliti mapu s") => "prestani dijeliti mapu s",
                 _ => null
             };
 
@@ -144,27 +151,27 @@ public class MyDiskRepository
     {
         using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
         {
-            var newFolder = new Folder(Guid.NewGuid(), nameOfFolder, parentFolderId, userId);
+            var newFolder = new Folder(Guid.NewGuid(), nameOfFolder, parentFolderId, userId, null);
             context.Folders.Add(newFolder);
             context.SaveChanges();
         }
     }
 
-    public static void CreateFile(string nameOfFile, Guid? parentFolderId)
+    public static void CreateFile(string nameOfFile, Guid? parentFolderId, Guid userId)
     {
         using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
         {
-            var newFile = new File(Guid.NewGuid(), nameOfFile,DateTime.UtcNow , new List<string>(){""},parentFolderId);
+            var newFile = new File(Guid.NewGuid(), nameOfFile,DateTime.UtcNow , new List<string>(){""},parentFolderId, userId,null);
             context.Files.Add(newFile);
             context.SaveChanges();
         }
     }
 
-    public static Guid? OpenFolder(string folderName, Guid? parentFolderId)
+    public static Guid? OpenFolder(string folderName, Guid? parentFolderId, Guid userId)
     {
         using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
         {
-            var folder = context.Folders.FirstOrDefault(f => f.Name == folderName && f.ParentFolderId == parentFolderId);
+            var folder = context.Folders.FirstOrDefault(f => f.Name == folderName && f.ParentFolderId == parentFolderId && f.UserId == userId);
             return folder.Id;
         }
     }
@@ -206,12 +213,12 @@ public class MyDiskRepository
         }
     }
 
-    public static void RenameFolder(string folderName, string newName, Guid? parentFolderId)
+    public static void RenameFolder(string folderName, string newName, Guid? parentFolderId, Guid userId)
     {
         using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
         {
             var folderToRename = context.Folders
-                .FirstOrDefault(f => f.Name == folderName && f.ParentFolderId == parentFolderId);
+                .FirstOrDefault(f => f.Name == folderName && f.ParentFolderId == parentFolderId && f.UserId == userId);
 
             folderToRename.Name = newName;
 
@@ -219,18 +226,71 @@ public class MyDiskRepository
         }
     }
 
-    public static void RenameFile(string fileName, string newName, Guid? folderId)
+    public static void RenameFile(string fileName, string newName, Guid? folderId, Guid userId)
     {
         using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
         {
             var fileToRename = context.Files
-                .FirstOrDefault(f => f.Name == fileName && f.FolderId == folderId);
+                .FirstOrDefault(f => f.Name == fileName && f.FolderId == folderId && f.UserId == userId);
 
             fileToRename.Name = newName;
 
             context.SaveChanges();
         }
     }
-    
+
+    public static void ShareFolder(Guid? parentFolderId, Guid usersId, Guid userId)
+    {   
+        using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
+        {
+            var folder = context.Folders.FirstOrDefault(f => f.ParentFolderId == parentFolderId && f.UserId == userId);
+            if (folder.UsersIds == null)
+            {
+                folder.UsersIds = new List<Guid>();
+            }
+            if (!folder.UsersIds.Contains(usersId) && folder.UserId != usersId)
+            {
+                folder.UsersIds.Add(usersId);
+                context.SaveChanges();
+            }
+        }
+    }
+
+    public static void StopShare(string folderName, Guid? parentFolderId, Guid userId)
+    {
+        using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
+        {
+            var folder = context.Folders.FirstOrDefault(f => f.ParentFolderId == parentFolderId && f.Name == folderName);
+            folder.UsersIds.Remove(userId);
+            context.SaveChanges();
+        }
+    }
+
+    public static void ShareFile(string fileName, Guid? folderId, Guid usersId, Guid userId)
+    {
+        using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
+        {
+            var file = context.Files.FirstOrDefault(f => f.FolderId == folderId && f.Name == fileName);
+            if (file.UsersIds == null)
+            {
+                file.UsersIds = new List<Guid>(); 
+            }
+            if (!file.UsersIds.Contains(usersId) && file.UserId != usersId)
+            {
+                file.UsersIds.Add(userId);
+                context.SaveChanges();
+            }
+        }
+    }
+
+    public static void StopShareFile(string fileName, Guid? folderId, Guid userId)
+    {
+        using (var context = new DriveDbContext(new DbContextOptionsBuilder<DriveDbContext>().Options))
+        {
+            var file = context.Files.FirstOrDefault(f => f.FolderId == folderId && f.Name == fileName);
+            file.UsersIds.Remove(userId);
+            context.SaveChanges();
+        }
+    }
     
 }
