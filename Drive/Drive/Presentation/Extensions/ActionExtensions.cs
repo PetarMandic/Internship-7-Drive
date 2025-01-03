@@ -98,7 +98,7 @@ public static class ActionExtensions
                 break;
             case 1:
                 Console.Clear();
-                SharingAction.Sharing(mail);
+                SharingAction.Sharing(mail, null);
                 break;
             case 2:
                 Console.Clear();

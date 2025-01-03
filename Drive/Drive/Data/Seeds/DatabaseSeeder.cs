@@ -28,18 +28,18 @@ namespace Drive.Data.Seeds
             builder.Entity<Folder>()
                 .HasData(new List<Folder>
                 {
-                    new Folder(Guid.NewGuid(), "Documents", null, bartol.Id, new List<Guid> { bartol.Id }),  
-                    new Folder(Guid.NewGuid(), "Images", null, ante.Id, new List<Guid> { ante.Id }),       
-                    new Folder(Guid.NewGuid(), "Projects", null, matija.Id, new List<Guid> { matija.Id }), 
+                    new Folder(Guid.NewGuid(), "Documents", null, bartol.Id, new List<Guid> { ante.Id}),  
+                    new Folder(Guid.NewGuid(), "Images", null, ante.Id, new List<Guid> { bartol.Id}),       
+                    new Folder(Guid.NewGuid(), "Projects", null, matija.Id, new List<Guid> { bartol.Id}), 
                 });
             
             builder.Entity<File>()
                 .HasData(new List<File>
                 {
-                    new File(Guid.NewGuid(), "Document1.txt", DateTime.UtcNow.AddDays(-10), new List<string>{"dokument1"}, null, bartol.Id, new List<Guid> { bartol.Id }),  
-                    new File(Guid.NewGuid(), "Image1.jpg", DateTime.UtcNow.AddDays(-5), new List<string>{"najbolja slika"}, null, ante.Id, new List<Guid> { ante.Id }),  
-                    new File(Guid.NewGuid(), "ProjectProposal.docx", DateTime.UtcNow.AddDays(-2), new List<string>{"prvi projekt"}, null, matija.Id, new List<Guid> { matija.Id }), 
-                    new File(Guid.NewGuid(), "Document2.pdf", DateTime.UtcNow.AddDays(-8), new List<string>{"dokument2"}, null, duje.Id, new List<Guid> { duje.Id }), 
+                    new File(Guid.NewGuid(), "Document1.txt", DateTime.UtcNow.AddDays(-10), new List<string>{"dokument1"}, null, bartol.Id, new List<Guid> { ante.Id}),  
+                    new File(Guid.NewGuid(), "Image1.jpg", DateTime.UtcNow.AddDays(-5), new List<string>{"najbolja slika"}, null, ante.Id, new List<Guid> { bartol.Id}),  
+                    new File(Guid.NewGuid(), "ProjectProposal.docx", DateTime.UtcNow.AddDays(-2), new List<string>{"prvi projekt"}, null, matija.Id, new List<Guid> { bartol.Id}), 
+                    new File(Guid.NewGuid(), "Document2.pdf", DateTime.UtcNow.AddDays(-8), new List<string>{"dokument2"}, null, duje.Id, new List<Guid> { matija.Id }), 
                 });
         }
     }
