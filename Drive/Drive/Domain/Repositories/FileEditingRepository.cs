@@ -1,13 +1,12 @@
 using Drive.Data.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Drive.Data.Entities;
-using File = Drive.Data.Entities.Models.File;
 
 namespace Drive.Domain.Repositories;
 
 public class FileEditingRepository
 {
-    public static bool EnterPressed(ConsoleKeyInfo key, string currentLine, string fileName, Guid? folderId)
+    public static bool EnterPressed(ConsoleKeyInfo key, string currentLine)
     {
         if (key.Key == ConsoleKey.Enter)
         {
@@ -59,13 +58,18 @@ public class FileEditingRepository
 
     public static (bool, string) DoesStringContainCommand(string currentLine)
     {
-        if (currentLine.Contains("(:)help") || currentLine.Contains("(:)spremanje i izlaz") || currentLine.Contains("(:)izlaz bez spremanja"))
+        if (currentLine.Contains("(:)help") || currentLine.Contains("(:)spremanje i izlaz") || currentLine.Contains("(:)izlaz bez spremanja") ||
+            currentLine.Contains("(:)podijeli datoteku") || currentLine.Contains("(:)prestani dijeliti datoteku") || currentLine.Contains("(:)otvori komentare"))
         {
-            var command = currentLine switch
+            var line = currentLine;
+            var command = line switch
             {
-                var line when line.Contains("(:)help") => "help",
-                var line when line.Contains("(:)spremanje i izlaz") => "spremanje i izlaz",
-                var line when line.Contains("(:)izlaz bez spremanja") => "izlaz bez spremanja",
+                var l when l.Contains("(:)help") => "(:)help",
+                var l when l.Contains("(:)spremanje i izlaz") => "(:)spremanje i izlaz",
+                var l when l.Contains("(:)izlaz bez spremanja") => "(:)izlaz bez spremanja",
+                var l when l.Contains("(:)podijeli datoteku") => "(:)podijeli datoteku",
+                var l when l.Contains("(:)prestani dijeliti datoteku") => "(:)prestani dijeliti datoteku",
+                var l when l.Contains("(:)otvori komentare") => "(:)otvori komentare",
                 _ => null 
             };
 
@@ -95,5 +99,5 @@ public class FileEditingRepository
     {
         Lists.newText.Clear();
     }
-
+    
 }
